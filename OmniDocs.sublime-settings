@@ -1,0 +1,59 @@
+{
+    "source.python": {
+        "module_docs": {
+            "method": "selector",
+            "options": {
+                "selector": "meta.import support.other.module"
+            },
+            "command": "open_url",
+            "args": {"url": "http://hackage.haskell.org/package/${module}"}
+        },
+        "lookup_symbol": { // allow for "windows" "osx" and "linux" variants?
+            "command": "open_url",
+            "args": {
+                "url": "http://www.haskell.org/hoogle/?hoogle=${selection}"
+            }
+        },
+        "language_docs": {
+            "command": "open_url",
+            "args": {"url": "http://www.haskell.org/"}
+        }
+    },
+    "source.haskell": {
+        "module_docs": {
+            "method": "selector",
+            "options": {
+                "selector": "meta.import support.other.module"
+            },
+            "command": "open_url",
+            "args": {"url": "http://hackage.haskell.org/package/${module}"}
+        },
+        "lookup_symbol": { // allow for "windows" "osx" and "linux" variants?
+            "command": "open_url",
+            "args": {
+                "url": "http://www.haskell.org/hoogle/?hoogle=${selection}"
+            }
+        },
+        "language_docs": {
+            "command": "open_url",
+            "args": {"url": "http://www.haskell.org/"}
+        }
+    },
+    "text.tex": {
+        "module_docs": {
+            "method": "regex",
+            "options": {
+                "pattern": "\\\\usepackage(\\[\\w*\\])?\\{(\\w*)\\}",
+                "module_name": "$2",
+                "across_open_files": true
+            },
+            "command": "exec",
+            "args": {"cmd": ["texdoc", "${module}"]}
+        },
+        // NO "import_scope": "meta.preamble support.class",
+        "lookup_symbol": {
+            "command": "open_url",
+            "args": {"url": "https://www.google.com/search?q=latex+${selection}"}
+        }
+    }
+}

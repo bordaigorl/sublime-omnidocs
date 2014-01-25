@@ -1,0 +1,13 @@
+[
+    { "keys": ["f1"], "command": "omni_docs_panel",
+      "args": {"always_show_choices": false},
+      "context": [
+            { "key": "selection_empty", "operator": "equal", "operand": true}
+        ]
+    },
+    { "keys": ["f1"], "command": "omni_docs_lookup",
+      "context": [
+            { "key": "selection_empty", "operator": "equal", "operand": false}
+        ]
+    }
+]

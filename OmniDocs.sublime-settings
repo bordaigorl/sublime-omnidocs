@@ -1,34 +1,58 @@
 {
     "source.python": {
         "module_docs": {
-            "method": "selector",
-            "options": {
-                "selector": "meta.import support.other.module"
-            },
+            "patterns": [
+                {
+                    "import_regex": "\\bfrom\\s+([a-zA-Z0-9.\\-\\_]+)\\s*import\\s*([a-zA-Z0-9.\\-\\_]+)$",
+                    "import_capture": "$1.$2"
+                },
+                {
+                    "import_regex": "\\bfrom\\s+([a-zA-Z0-9.\\-\\_]+)\\s*import\\s*([a-zA-Z0-9.\\-\\_ ]+(,[a-zA-Z0-9.\\-\\_ ]+)+|\\*)$",
+                    "import_capture": "$1"
+                },
+                {
+                    "import_regex": "^\\s*import\\s+([a-zA-Z0-9.\\-\\_, ]+)$",
+                    "import_capture": "$1",
+                    "module_regex": "[a-zA-Z0-9.\\-\\_]+",
+                    // "module_capture": "$0",
+                }
+            ],
+            "across_open_files": false,
             "command": "open_url",
-            "args": {"url": "http://hackage.haskell.org/package/${module}"}
+            "args": {"url": "http://devdocs.io/#q=python ${module}"}
+            // Alternative:
+            //"args": {"url": "http://docs.python.org/3/library/${module}.html"}
         },
-        "lookup_symbol": { // allow for "windows" "osx" and "linux" variants?
+        "lookup_docs": {
             "command": "open_url",
             "args": {
-                "url": "http://www.haskell.org/hoogle/?hoogle=${selection}"
+                "url": "http://devdocs.io/#q=python ${selection}"
             }
         },
         "language_docs": {
             "command": "open_url",
-            "args": {"url": "http://www.haskell.org/"}
+            "args": {"url": "http://www.python.org/doc/"}
         }
     },
+
+    "text.html.markdown": {
+        "language_docs": {
+            "command": "open_url",
+            "args": {
+                "url": "http://daringfireball.net/projects/markdown/syntax"
+            }
+        }
+    },
+    
     "source.haskell": {
         "module_docs": {
-            "method": "selector",
-            "options": {
-                "selector": "meta.import support.other.module"
-            },
-            "command": "open_url",
-            "args": {"url": "http://hackage.haskell.org/package/${module}"}
+            "selector": "meta.import support.other.module",
+            // "command": "open_url",
+            // "args": {"url": "http://www.haskell.org/hoogle/?hoogle=${module}"}
+            "command": "hoogle_guess", // Replace with hoogle
+            "args": {"query": "${module}"}
         },
-        "lookup_symbol": { // allow for "windows" "osx" and "linux" variants?
+        "lookup_docs": { // allow for "windows" "osx" and "linux" variants?
             "command": "open_url",
             "args": {
                 "url": "http://www.haskell.org/hoogle/?hoogle=${selection}"
@@ -41,19 +65,19 @@
     },
     "text.tex": {
         "module_docs": {
-            "method": "regex",
-            "options": {
-                "pattern": "\\\\usepackage(\\[\\w*\\])?\\{(\\w*)\\}",
-                "module_name": "$2",
-                "across_open_files": true
-            },
+            "pattern": "\\\\usepackage(\\[\\w*\\])?\\{(\\w*)\\}",
+            "module_name": "$2",
+            "across_open_files": true,
             "command": "exec",
             "args": {"cmd": ["texdoc", "${module}"]}
         },
-        // NO "import_scope": "meta.preamble support.class",
-        "lookup_symbol": {
+        "language_docs":{
             "command": "open_url",
-            "args": {"url": "https://www.google.com/search?q=latex+${selection}"}
+            "args": {"url": "http://svn.gna.org/viewcvs/*checkout*/latexrefman/trunk/latex2e.html"}
+        },
+        "lookup_docs": {
+            "command": "open_url",
+            "args": {"url": "http://tex.stackexchange.com/search?q=${selection}"}
         }
     }
 }

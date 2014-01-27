@@ -1,4 +1,10 @@
 {
+    "default": {
+        "lookup_docs": {
+            "command": "open_url",
+            "args": {"url": "http://www.google.com/#q=$selection"}
+        }
+    },
     "source.python": {
         "module_docs": {
             "patterns": [
@@ -63,10 +69,65 @@
             "args": {"url": "http://www.haskell.org/"}
         }
     },
+
+    "source.java": {
+        "language_docs":{
+            "command": "open_url",
+            "args": {"url": "http://docs.oracle.com/javase/7/docs/api/"}
+        },
+        "module_docs": {
+            "selector": "meta.import storage.modifier.import",
+            // "selector": "storage.type - storage.type.primitive",
+            "across_open_files": true,
+            "command": "open_url",
+            "args": {"url": "http://javadocs.org/$module"}
+        }
+    },
+
+    "source.scala": {
+// import p._     all members of p
+// import p.x     the member x of p.
+// import p.{x => a}     the member x of p renamed as a.
+// import p.{x, y}     the members x and y of p.
+// import p1.p2.z     the member z of p2, itself member of p1.
+        // "module_docs": {
+        //     "patterns": [
+        //         {
+        //             "import_regex": "\\bfrom\\s+([a-zA-Z0-9.\\-\\_]+)\\s*import\\s*([a-zA-Z0-9.\\-\\_]+)$",
+        //             "import_capture": "$1.$2"
+        //         },
+        //         {
+        //             "import_regex": "\\bfrom\\s+([a-zA-Z0-9.\\-\\_]+)\\s*import\\s*([a-zA-Z0-9.\\-\\_ ]+(,[a-zA-Z0-9.\\-\\_ ]+)+|\\*)$",
+        //             "import_capture": "$1"
+        //         },
+        //         {
+        //             "import_regex": "^\\s*import\\s+([a-zA-Z0-9.\\-\\_, ]+)$",
+        //             "import_capture": "$1",
+        //             "module_regex": "[a-zA-Z0-9.\\-\\_]+",
+        //             // "module_capture": "$0",
+        //         }
+        //     ],
+        //     "across_open_files": false,
+        //     "command": "open_url",
+        //     "args": {"url": "http://devdocs.io/#q=python ${module}"}
+        // },
+        "lookup_docs": {
+            "command": "open_url",
+            "args": {"url": "http://scalex.org/?q=${selection}"}
+        },
+        "language_docs": {
+            "command": "open_url",
+            "args": {"url": "http://www.scala-lang.org/api/current/"}
+        }
+    },
+    
     "text.tex": {
         "module_docs": {
-            "pattern": "\\\\usepackage(\\[\\w*\\])?\\{(\\w*)\\}",
-            "module_name": "$2",
+            "patterns": [{
+                "import_regex": "\\\\usepackage(\\[\\w*\\])?\\{([^\\}]*)\\}",
+                "import_capture": "$2",
+                "module_regex": "[^ \n\t,]+"
+            }],
             "across_open_files": true,
             "command": "exec",
             "args": {"cmd": ["texdoc", "${module}"]}

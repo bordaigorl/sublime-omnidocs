@@ -7,11 +7,6 @@ import re
 OMNI_DOCS_STATUS = "omni_docs"
 OMNI_DOCS_KEY = "omni_docs"
 
-PRETTY_CMD = {
-    "open_url": "Browse",
-    "open_file": "Open"
-}
-
 
 def jsonmap(f, obj):
     if isinstance(obj, dict):
@@ -31,14 +26,6 @@ def apply_template(env={}):
     def resfun(x):
         return Template(x).safe_substitute(env)
     return resfun
-
-
-def show_effect(opt):
-    cmd = opt.get("command", "")
-    args = opt.get("args", {})
-    if cmd == "exec":
-        return "Run " + " ".join(args["cmd"])
-    return " ".join([PRETTY_CMD.get(cmd, cmd)] + list(map(str, args.values())))
 
 
 class OmniDocsCommand(sublime_plugin.TextCommand):
@@ -64,6 +51,20 @@ class OmniDocsCommand(sublime_plugin.TextCommand):
             sublime.set_timeout(
                 lambda: self.view.window().run_command(cmd["command"], cmd.get("args", {})),
                 0)
+
+    PRETTY_CMD = {
+        "open_url": "Browse",
+        "open_file": "Open"
+    }
+
+    def show_effect(self, items, item):
+        cmd = items[item][1].get("command", "")
+        args = items[item][1].get("args", {})
+        if cmd == "exec":
+            status = "Run " + " ".join(args["cmd"])
+        else:
+            status = " ".join([self.PRETTY_CMD.get(cmd, cmd)] + list(map(str, args.values())))
+        self.view.set_status(OMNI_DOCS_STATUS, status)
 
     def make_env(self, scope):
         view = self.view
@@ -139,8 +140,7 @@ class OmniDocsPanelCommand(OmniDocsCommand):
                         "command": module_docs["command"],
                         "args": jsonmap(apply_template(env), module_docs.get("args", {}))
                     }
-                    items.append(
-                        (["Show Docs for '" + module + "'", show_effect(cmd)], cmd))
+                    items.append(("Docs for '" + module + "'", cmd))
 
             # LANGUAGE DOCUMENTATION
             if "language_docs" in options:
@@ -149,18 +149,18 @@ class OmniDocsPanelCommand(OmniDocsCommand):
                 lang_docs["args"] = jsonmap(
                     apply_template(env), lang_docs.get("args", {}))
                 if lang != "default":
-                    items += [
-                        ([lang + " reference", "Show generic help for this language"], lang_docs)]
+                    items.append((lang + " reference", lang_docs))
                 else:
-                    items += [
-                        (["Generic help", show_effect(lang_docs)], lang_docs)]
+                    items.append(("Generic help", lang_docs))
 
             # SHOW THE PANEL
             if len(items) > 1 or always_show_choices:
                 view.window().show_quick_panel(
                     [item for (item, _) in items],
-                    lambda i: self.do_show_docs(items, i))
-            else:
+                    lambda i: self.do_show_docs(items, i),
+                    0, 0,
+                    lambda i: self.show_effect(items, i))
+            elif len(items) == 1:
                 self.do_show_docs(items, 0)
 
         except (KeyError):

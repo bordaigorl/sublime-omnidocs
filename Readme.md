@@ -6,7 +6,7 @@ A simple plugin for Sublime Text 3 for jumping to documentation for:
  2. imported modules / API
  3. language reference
 
-It supports some languages are supported out-of-the-box but other can be added by customising the settings.
+Some languages are supported out-of-the-box (see [Supported Languages](#supported-languages)) but other can be added by [customising the settings](#configuration).
 
 The basic usage is pressing <kbd>F1</kbd> when needing help:
 
@@ -20,8 +20,8 @@ The basic usage is pressing <kbd>F1</kbd> when needing help:
  1. Install [Sublime Text 3](http://www.sublimetext.com/3)
  2. Install the plugin either:
  
-     a. with **Package Control**: see <https://sublime.wbond.net/installation>, or
-     b. **manually**: by cloning this repository in your Sublime Text Package directory
+     - with **Package Control**: see <https://sublime.wbond.net/installation>, or
+     - **manually**: by cloning this repository in your Sublime Text Package directory
 
 ## Usage
 
@@ -31,7 +31,7 @@ The command `omni_docs_panel` looks for imported modules in the current view or 
 
 The `omni_docs_lookup` command looks up the current selection in the documentation.
 
-The settings control, on a per-language basis, how the documentation should be accessed and shown; most of the presets open official online references but this can be fully customised in the settings, see [#configuration].
+The settings control, on a per-language basis, how the documentation should be accessed and shown; most of the presets open official online references but this can be fully customised in the settings, see [Configuration](#configuration).
 
 ### Key bindings and commands
 
@@ -48,6 +48,8 @@ OmniDocs is designed to support any language, custom documentation sources and e
 
 The settings can be customised in the file `OmniDocs.sublime-settings`. The settings can also be accessed from `Preferences > Package Preferences > Omni Docs`.
 
+> **Note**: we refer to *import* any language construct that loads some documented external component; we call *modules* such components. Examples of imports are python's `import` statements or LaTeX' `\usepackage`. Examples of modules are python's `os.path` and LaTeX' `tikz`.
+
 The basic structure of the settings is the following:
 
 ```
@@ -62,8 +64,7 @@ The basic structure of the settings is the following:
             "args": <args>
         },
         "module_docs": {
-            "method": <method>,
-            "options": <method-options>,
+            <matching-method>,
             "across_open_files": <true/false>,
             "command": <command>,
             "args": <args>           
@@ -75,7 +76,7 @@ The basic structure of the settings is the following:
 
 The `<selector>` controls when the rules apply. It can be for example `text.html`; OmniDocs will look for the most specific selector for which there are rules. For example an entry `text.html.markdown` will be triggered in a markdown document even if an entry for `text.html` exists.
 
-If the settings for a particular selector is left empty (i.e. `<selector>: {}`), then that scope will be disabled.
+If the settings for a particular selector is left empty (i.e. `<selector>: {}`), then that scope will be disabled; similarly, you can disable a specific section by setting it to the empty object.
 
 The special selector `default` will trigger when no selector matched the scope of the current selection.
 
@@ -93,40 +94,85 @@ There are three main sections in the settings for a selector: `language_docs`, `
 ## Language and Lookup docs
 
 The `language_docs` and `lookup_docs` specify which command has to be executed when the user requests the reference for the current language and help on a selected symbol respectively.
-The `args` field of the `lookup_docs` setting should contain the `$selection` variable to show relevant information. For example a generic `lookup_docs` setting could be `{"command": "open_url", "args": {"url": "http://www.google.com?q=$selection"}}`.
+The `args` field of the `lookup_docs` setting should contain the `$selection` variable to show relevant information. For example a generic `lookup_docs` setting could be `{"command": "open_url", "args": {"url": "http://www.google.com/#q=$selection"}}`.
 
 ## Module docs
 
 The `module_docs` section is more complex as it needs to specify how OmniDocs should find the imported modules.
+There are two methods to specify this: based on *scopes* and based on *patterns*.
 
-## Example
+### Scope based method
+
+The first and simplest method uses selectors to find the module names.
+For example, in java (with the standard ST3 Java syntax definition) the imported module name in `import` statements are marked with the scope `meta.import storage.modifier.import`:
 
 ```json
-    "text.tex": {
-        "module_docs": {
-            "method": "regex",
-            "options": {
-                "pattern": "\\\\usepackage(\\[\\w*\\])?\\{(\\w*)\\}",
-                "module_name": "$2"
-            },
-            "across_open_files": true,
-            "command": "exec",
-            "args": {"cmd": ["texdoc", "${module}"]}
-        },
-        "language_docs":{
-            "command": "open_url",
-            "args": {"url": "http://svn.gna.org/viewcvs/*checkout*/latexrefman/trunk/latex2e.html"}
-        },
-        "lookup_docs": {
-            "command": "open_url",
-            "args": {"url": "http://tex.stackexchange.com/search?q=${selection}"}
-        }
+"source.java": {
+    "module_docs": {
+        "selector": "meta.import storage.modifier.import",
+        "across_open_files": true,
+        "command": "open_url",
+        "args": {"url": "http://javadocs.org/$module"}
     }
+}
+```
+
+If instead you prefer the names of the classes used in the code to be detected as possible topics of the documentation you could use
+
+```json
+    "selector": "storage.type - storage.type.primitive"
+```
+
+### Pattern based method
+
+Instead of the `selector` setting a `patterns` array can specify how to extract the imports using regular expressions (*regex*).
+
+```
+"module_docs": {
+    "patterns": [
+        {
+            "import_regex":   <regex>
+            "import_capture": <capture> // optional
+            "module_regex":   <regex>   // optional
+        },
+        ...
+    ]
+}
+```
+
+The pattern based method works in two phases.
+First, the `import_regex` regex is used to extract the lines containing imports. With `import_capture` you can use capture groups of the `import_regex`  to extract from it the name(s) of the imported module(s); if left unspecified the full match is used.
+Second, if `module_regex` is specified, it is used to extract from a match possibly multiple names of modules. This step is optional but necessary to parse imports that include more than a module.
+
+For example, to parse `import string, os.path` in python you need to match the import with `"import_regex": "^\\s*import\\s+([a-zA-Z0-9.\\-\\_, ]+)$"`, capture the list of modules with `"import_capture": "$1"` and finally specify `"module_regex": "[a-zA-Z0-9.\\-\\_]+"` so that the module names can be matched in the extracted list.
+
+
+## Example configuration
+
+```json
+"text.tex": {
+    "module_docs": {
+        "patterns": [{
+            "import_regex": "\\\\usepackage(\\[\\w*\\])?\\{([^\\}]*)\\}",
+            "import_capture": "$2",
+            "module_regex": "[^ \n\t,]+"
+        }],
+        "across_open_files": true,
+        "command": "exec",
+        "args": {"cmd": ["texdoc", "${module}"]}
+    },
+    "language_docs":{
+        "command": "open_url",
+        "args": {"url": "http://svn.gna.org/viewcvs/*checkout*/latexrefman/trunk/latex2e.html"}
+    },
+    "lookup_docs": {
+        "command": "open_url",
+        "args": {"url": "http://tex.stackexchange.com/search?q=${selection}"}
+    }
+}
 ```
 
 ## Todo
 
- + Extend matching scheme to support multiple imports on same statement
  + Built-in support for more languages
-
-## Licence
+ + Add a command to request parse and display json for docs

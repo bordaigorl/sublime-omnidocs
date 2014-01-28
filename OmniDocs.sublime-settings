@@ -17,7 +17,7 @@
                     "import_capture": "$1"
                 },
                 {
-                    "import_regex": "^\\s*import\\s+([a-zA-Z0-9.\\-\\_, ]+)$",
+                    "import_regex": "^\\s*import\\s+([a-zA-Z0-9.\\-\\_]+(\\s*,\\s*[a-zA-Z0-9.\\-\\_]+)*)\\s*(as .*)?$",
                     "import_capture": "$1",
                     "module_regex": "[a-zA-Z0-9.\\-\\_]+",
                 }

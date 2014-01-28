@@ -75,10 +75,9 @@ class OmniDocsCommand(sublime_plugin.TextCommand):
         env["file_extension"], env[
             "file_base_name"] = path.splitext(env["file_name"])
         env["packages"] = sublime.packages_path()
-        env["project"] = view.window().project_file_name()
+        env["project"] = view.window().project_file_name() or ""
         env["project_path"], env["project_name"] = path.split(env["project"])
-        env["project_base_name"], env[
-            "project_extension"] = path.splitext(env["project_name"])
+        env["project_base_name"], env["project_extension"] = path.splitext(env["project_name"])
         env["language"] = scope.split('.')[-1].capitalize()
         env["selection"] = view.substr(view.sel()[0])
         return env

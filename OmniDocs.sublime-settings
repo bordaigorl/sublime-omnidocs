@@ -20,7 +20,6 @@
                     "import_regex": "^\\s*import\\s+([a-zA-Z0-9.\\-\\_, ]+)$",
                     "import_capture": "$1",
                     "module_regex": "[a-zA-Z0-9.\\-\\_]+",
-                    // "module_capture": "$0",
                 }
             ],
             "across_open_files": false,
@@ -53,12 +52,10 @@
     "source.haskell": {
         "module_docs": {
             "selector": "meta.import support.other.module",
-            // "command": "open_url",
-            // "args": {"url": "http://www.haskell.org/hoogle/?hoogle=${module}"}
-            "command": "hoogle_guess", // Replace with hoogle
-            "args": {"query": "${module}"}
+            "command": "open_url",
+            "args": {"url": "http://www.haskell.org/hoogle/?hoogle=${module}"}
         },
-        "lookup_docs": { // allow for "windows" "osx" and "linux" variants?
+        "lookup_docs": {
             "command": "open_url",
             "args": {
                 "url": "http://www.haskell.org/hoogle/?hoogle=${selection}"
@@ -85,32 +82,19 @@
     },
 
     "source.scala": {
-// import p._     all members of p
-// import p.x     the member x of p.
-// import p.{x => a}     the member x of p renamed as a.
-// import p.{x, y}     the members x and y of p.
-// import p1.p2.z     the member z of p2, itself member of p1.
-        // "module_docs": {
-        //     "patterns": [
-        //         {
-        //             "import_regex": "\\bfrom\\s+([a-zA-Z0-9.\\-\\_]+)\\s*import\\s*([a-zA-Z0-9.\\-\\_]+)$",
-        //             "import_capture": "$1.$2"
-        //         },
-        //         {
-        //             "import_regex": "\\bfrom\\s+([a-zA-Z0-9.\\-\\_]+)\\s*import\\s*([a-zA-Z0-9.\\-\\_ ]+(,[a-zA-Z0-9.\\-\\_ ]+)+|\\*)$",
-        //             "import_capture": "$1"
-        //         },
-        //         {
-        //             "import_regex": "^\\s*import\\s+([a-zA-Z0-9.\\-\\_, ]+)$",
-        //             "import_capture": "$1",
-        //             "module_regex": "[a-zA-Z0-9.\\-\\_]+",
-        //             // "module_capture": "$0",
-        //         }
-        //     ],
-        //     "across_open_files": false,
-        //     "command": "open_url",
-        //     "args": {"url": "http://devdocs.io/#q=python ${module}"}
-        // },
+        "module_docs": {
+            "patterns": [
+                { // ^\s*import\s*([a-zA-Z0-9.,\{\}\s\-\_=>]*)\s*$
+                    "import_regex": "^\\s*import\\s*([a-zA-Z0-9.,\\{\\} \\t\\-\\_=>]*)\\s*$",
+                    "import_capture": "$1",
+                    "module_regex": "([a-zA-Z0-9.\\-_]*[^.\\{_])(\\.(\\{[^\\}]*\\}|_))?",
+                    "module_capture": "\\1"
+                },
+            ],
+            "across_open_files": false,
+            "command": "open_url",
+            "args": {"url": "http://scalex.org/?q=${module}"}
+        },
         "lookup_docs": {
             "command": "open_url",
             "args": {"url": "http://scalex.org/?q=${selection}"}

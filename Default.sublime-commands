@@ -1,0 +1,18 @@
+[
+
+    {
+        "caption": "Omni Docs: List modules imported in this view",
+        "command": "omni_docs_panel",
+        "args": {"always_show_choices": true, "only_current_view": true}
+    },
+    {
+        "caption": "Omni Docs: List modules imported in open files",
+        "command": "omni_docs_panel",
+        "args": {"always_show_choices": true, "only_current_view": false}
+    },
+    {
+        "caption": "Omni Docs: Lookup current selection in docs",
+        "command": "omni_docs_lookup"
+    },
+
+]

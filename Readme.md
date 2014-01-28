@@ -6,14 +6,11 @@ A simple plugin for Sublime Text 3 for jumping to documentation for:
  2. imported modules / API
  3. language reference
 
-Some languages are supported out-of-the-box (see [Supported Languages](#supported-languages)) but other can be added by [customising the settings](#configuration).
+Some languages are supported out-of-the-box (see [Supported Languages](#languages-supported-out-of-the-box)) but other can be added by [customising the settings](#configuration).
 
-The basic usage is pressing <kbd>F1</kbd> when needing help:
+The basic usage is pressing <kbd>F1</kbd> when needing help; a panel will be shown with the possible options:
 
- * if something is selected then OmniDocs will search for the selected symbol in the docs for the current programming language;
- * if nothing is selected a quick panel will display a list of the currently imported modules, allowing you to open the corresponding documentation with one click.
-
-<!-- Screenshot -->
+![Imgur](http://i.imgur.com/61egV29.png)
 
 ## Installation
 
@@ -35,12 +32,23 @@ The settings control, on a per-language basis, how the documentation should be a
 
 ### Key bindings and commands
 
-### Supported languages
+The default keymap binds <kbd>F1</kbd> so that when it is pressed:
+
+ * if something is selected then OmniDocs will search for the selected symbol in the docs for the current programming language;
+ * if nothing is selected a quick panel will display a list of the currently imported modules, allowing you to open the corresponding documentation with one click.
+
+To see the available commands you can bring up the commands panel with <kbd>ctrl+shift+P</kbd> and typing "OmniDocs".
+
+### Languages supported out-of-the-box
 
  + Python
  + Markdown (only syntax reference)
  + Haskell
  + LaTeX
+ + Java
+ + Scala
+
+Support for other languages can be easily added through the settings.
 
 ## Configuration
 

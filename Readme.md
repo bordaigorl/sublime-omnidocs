@@ -10,7 +10,7 @@ Some languages are supported out-of-the-box (see [Supported Languages](#language
 
 The basic usage is pressing <kbd>F1</kbd> when needing help; a panel will be shown with the possible options:
 
-![Imgur](http://i.imgur.com/61egV29.png)
+![Imgur](http://i.imgur.com/rQPqvou.png)
 
 ## Installation
 

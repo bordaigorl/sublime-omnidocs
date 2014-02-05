@@ -17,7 +17,7 @@ The basic usage is pressing <kbd>F1</kbd> when needing help; a panel will be sho
  1. Install [Sublime Text 3](http://www.sublimetext.com/3)
  2. Install the plugin either:
  
-     - with **Package Control**: see <https://sublime.wbond.net/installation>, or
+     - with **Package Control**: see <https://sublime.wbond.net/docs/usage>, or
      - **manually**: by cloning this repository in your Sublime Text Package directory
 
 ## Usage
@@ -184,3 +184,4 @@ For example, to parse `import string, os.path` in python you need to match the i
 
  + Built-in support for more languages
  + Add a command to request parse and display json for docs
+ + Consider switching to settings driven by syntax specific setting files

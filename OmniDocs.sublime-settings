@@ -19,7 +19,7 @@
                 {
                     "import_regex": "^\\s*import\\s+([a-zA-Z0-9.\\-\\_]+(\\s*,\\s*[a-zA-Z0-9.\\-\\_]+)*)\\s*(as .*)?$",
                     "import_capture": "$1",
-                    "module_regex": "[a-zA-Z0-9.\\-\\_]+",
+                    "module_regex": "[a-zA-Z0-9.\\-\\_]+"
                 }
             ],
             "across_open_files": false,
@@ -89,7 +89,7 @@
                     "import_capture": "$1",
                     "module_regex": "([a-zA-Z0-9.\\-_]*[^.\\{_])(\\.(\\{[^\\}]*\\}|_))?",
                     "module_capture": "\\1"
-                },
+                }
             ],
             "across_open_files": false,
             "command": "open_url",

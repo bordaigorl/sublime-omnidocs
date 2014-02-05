@@ -7,6 +7,8 @@ import re
 OMNI_DOCS_STATUS = "omni_docs"
 OMNI_DOCS_KEY = "omni_docs"
 
+ST3 = int(sublime.version()) > 3000
+
 
 def jsonmap(f, obj):
     if isinstance(obj, dict):
@@ -17,6 +19,8 @@ def jsonmap(f, obj):
     elif isinstance(obj, list):
         return list(map(lambda x: jsonmap(f, x), obj))
     elif isinstance(obj, str):
+        return f(obj)
+    elif not ST3 and isinstance(obj, unicode):
         return f(obj)
     else:
         return obj
@@ -75,9 +79,10 @@ class OmniDocsCommand(sublime_plugin.TextCommand):
         env["file_extension"], env[
             "file_base_name"] = path.splitext(env["file_name"])
         env["packages"] = sublime.packages_path()
-        env["project"] = view.window().project_file_name() or ""
-        env["project_path"], env["project_name"] = path.split(env["project"])
-        env["project_base_name"], env["project_extension"] = path.splitext(env["project_name"])
+        if ST3:
+            env["project"] = view.window().project_file_name() or ""
+            env["project_path"], env["project_name"] = path.split(env["project"])
+            env["project_base_name"], env["project_extension"] = path.splitext(env["project_name"])
         env["language"] = scope.split('.')[-1].capitalize()
         env["selection"] = view.substr(view.sel()[0])
         return env
@@ -154,11 +159,16 @@ class OmniDocsPanelCommand(OmniDocsCommand):
 
             # SHOW THE PANEL
             if len(items) > 1 or always_show_choices:
-                view.window().show_quick_panel(
-                    [item for (item, _) in items],
-                    lambda i: self.do_show_docs(items, i),
-                    0, 0,
-                    lambda i: self.show_effect(items, i))
+                if ST3:
+                    view.window().show_quick_panel(
+                        [item for (item, _) in items],
+                        lambda i: self.do_show_docs(items, i),
+                        0, 0,
+                        lambda i: self.show_effect(items, i))
+                else:
+                    view.window().show_quick_panel(
+                        [item for (item, _) in items],
+                        lambda i: self.do_show_docs(items, i))
             elif len(items) == 1:
                 self.do_show_docs(items, 0)
 
@@ -185,3 +195,11 @@ class OmniDocsLookupCommand(OmniDocsCommand):
 
         except (KeyError):
             view.set_status(OMNI_DOCS_STATUS, "Error in Omni Docs settings")
+
+
+if not ST3:
+    import webbrowser
+    class OpenUrlCommand(sublime_plugin.WindowCommand):
+
+        def run(self, url=""):
+            webbrowser.open_new_tab(url)

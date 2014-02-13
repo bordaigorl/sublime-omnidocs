@@ -67,6 +67,26 @@
         }
     },
 
+    "source.erlang": {
+        "language_docs":{
+            "command": "open_url",
+            "args": {"url": "http://www.erlang.org/doc/reference_manual/users_guide.html"}
+        },
+        "lookup_docs": {
+            "command": "open_url",
+            "args": {
+                "url": "http://www.erlang.org/erldoc?q=${selection}"
+            }
+        },
+        "module_docs": {
+            "selector": "meta.import storage.modifier.import",
+            // "selector": "storage.type - storage.type.primitive",
+            "across_open_files": true,
+            "command": "open_url",
+            "args": {"url": "http://www.erlang.org/erldoc?q=$module"}
+        }
+    },
+
     "source.java": {
         "language_docs":{
             "command": "open_url",

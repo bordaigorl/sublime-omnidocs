@@ -1,6 +1,6 @@
-# Omni Docs plugin for Sublime Text 3
+# Omni Docs plugin for Sublime Text
 
-A simple plugin for Sublime Text 3 for jumping to documentation for:
+A simple plugin for Sublime Text for jumping to documentation for:
 
  1. selected symbols
  2. imported modules / API
@@ -12,13 +12,19 @@ The basic usage is pressing <kbd>F1</kbd> when needing help; a panel will be sho
 
 ![Imgur](http://i.imgur.com/rQPqvou.png)
 
+## Changelog
+
+ - **Version 1.1.0**:
+     + added support for Sublime Text 2
+     + added docs patterns for Erlang
+
 ## Installation
 
  1. Install [Sublime Text 3](http://www.sublimetext.com/3)
  2. Install the plugin either:
  
-     - with **Package Control**: see <https://sublime.wbond.net/docs/usage>, or
-     - **manually**: by cloning this repository in your Sublime Text Package directory
+     - with **Package Control**: <kbd>ctrl+shift+P</kbd>, type "Install Package" and select "OmniDocs"; see <https://sublime.wbond.net/docs/usage>, or
+     - **manually**: by cloning this repository in your Sublime Text Package directory `git clone git@github.com:bordaigorl/sublime-omnidocs.git` in your packages directory
 
 ## Usage
 

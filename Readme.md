@@ -53,6 +53,7 @@ To see the available commands you can bring up the commands panel with <kbd>ctrl
  + LaTeX
  + Java
  + Scala
+ + Erlang
 
 Support for other languages can be easily added through the settings.
 

@@ -79,11 +79,10 @@
             }
         },
         "module_docs": {
-            "selector": "meta.import storage.modifier.import",
-            // "selector": "storage.type - storage.type.primitive",
+            "selector": "entity.name.type.class.module - meta.directive.module",
             "across_open_files": true,
             "command": "open_url",
-            "args": {"url": "http://www.erlang.org/erldoc?q=$module"}
+            "args": {"url": "http://www.erlang.org/doc/man/${module}.html"}
         }
     },
 

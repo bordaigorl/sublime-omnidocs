@@ -13,6 +13,6 @@
     {
         "caption": "Omni Docs: Lookup current selection in docs",
         "command": "omni_docs_lookup"
-    },
+    }
 
 ]

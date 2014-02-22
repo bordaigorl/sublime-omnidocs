@@ -20,11 +20,21 @@ The basic usage is pressing <kbd>F1</kbd> when needing help; a panel will be sho
 
 ## Installation
 
- 1. Install [Sublime Text 3](http://www.sublimetext.com/3)
- 2. Install the plugin either:
+### Via Package Control
  
-     - with **Package Control**: <kbd>ctrl+shift+P</kbd>, type "Install Package" and select "OmniDocs"; see <https://sublime.wbond.net/docs/usage>, or
-     - **manually**: by cloning this repository in your Sublime Text Package directory `git clone git@github.com:bordaigorl/sublime-omnidocs.git` in your packages directory
+Make sure you have [**Package Control**](https://sublime.wbond.net/docs/usage) installed in Sublime Text and then press <kbd>ctrl+shift+P</kbd>, type "Install Package" and select "OmniDocs".
+
+### Manual install
+
+You can clone the [OmniDocs repository](https://github.com/bordaigorl/sublime-omnidocs) in your Sublime Text Package directory (accessible from the `Preferences > Browse Packages...` menu) with the command
+
+    git clone git@github.com:bordaigorl/sublime-omnidocs.git OmniDocs
+
+or by downloading the last version of OmniDocs [here](https://github.com/bordaigorl/sublime-omnidocs/archive/master.zip) and extracting the contents to the Package directory.
+
+## Contributing
+
+If you manage to add support for languages and you think that could be useful for others please fork the repo on *GitHub* [here](https://github.com/bordaigorl/sublime-omnidocs) and submit a pull request.
 
 ## Usage
 
@@ -63,7 +73,7 @@ OmniDocs is designed to support any language, custom documentation sources and e
 
 The settings can be customised in the file `OmniDocs.sublime-settings`. The settings can also be accessed from `Preferences > Package Preferences > Omni Docs`.
 
-> **Note**: we refer to *import* any language construct that loads some documented external component; we call *modules* such components. Examples of imports are python's `import` statements or LaTeX' `\usepackage`. Examples of modules are python's `os.path` and LaTeX' `tikz`.
+> **Note**: we call *import* any language construct that loads some documented external component; we call *modules* such components. Examples of imports are python's `import` statements or LaTeX' `\usepackage`. Examples of modules are python's `os.path` and LaTeX' `tikz`.
 
 The basic structure of the settings is the following:
 

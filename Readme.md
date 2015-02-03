@@ -14,6 +14,9 @@ The basic usage is pressing <kbd>F1</kbd> when needing help; a panel will be sho
 
 ## Changelog
 
+ - **Version 1.2.0**:
+     + setting `language_docs` can be a list
+
  - **Version 1.1.0**:
      + added support for Sublime Text 2
      + added docs patterns for Erlang
@@ -118,7 +121,8 @@ There are three main sections in the settings for a selector: `language_docs`, `
 
 ## Language and Lookup docs
 
-The `language_docs` and `lookup_docs` specify which command has to be executed when the user requests the reference for the current language and help on a selected symbol respectively.
+The `language_docs` and `lookup_docs` setting specify which command has to be executed when the user requests the reference for the current language and help on a selected symbol respectively.
+The value of `language_docs` can also be a list of entries, for languages with more than one documentation resource.
 The `args` field of the `lookup_docs` setting should contain the `$selection` variable to show relevant information. For example a generic `lookup_docs` setting could be `{"command": "open_url", "args": {"url": "http://www.google.com/#q=$selection"}}`.
 
 ## Module docs

@@ -149,13 +149,17 @@ class OmniDocsPanelCommand(OmniDocsCommand):
             # LANGUAGE DOCUMENTATION
             if "language_docs" in options:
                 lang_docs = options["language_docs"]
+                if not isinstance(lang_docs, list):
+                    lang_docs = [lang_docs]
                 lang = env["module"] = env["language"]
-                lang_docs["args"] = jsonmap(
-                    apply_template(env), lang_docs.get("args", {}))
-                if lang != "default":
-                    items.append((lang + " reference", lang_docs))
-                else:
-                    items.append(("Generic help", lang_docs))
+                for ld in lang_docs:
+                    ld["args"] = jsonmap(
+                        apply_template(env), ld.get("args", {}))
+                    if lang != "default":
+                        caption = apply_template(env)(ld.get("caption", "${language} reference"))
+                    else:
+                        caption = "Generic Help"
+                    items.append((caption, ld))
 
             # SHOW THE PANEL
             if len(items) > 1 or always_show_choices:

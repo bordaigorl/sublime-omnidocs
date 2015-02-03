@@ -41,14 +41,21 @@
     },
 
     "text.html.markdown": {
-        "language_docs": {
+        "language_docs": [{
+            "caption": "Daring Fireball specs",
             "command": "open_url",
-            "args": {
-                "url": "http://daringfireball.net/projects/markdown/syntax"
-            }
-        }
+            "args": {"url": "http://daringfireball.net/projects/markdown/syntax"}
+        }, {
+            "caption": "CommonMark specs",
+            "command": "open_url",
+            "args": {"url": "http://spec.commonmark.org/0.15/"}
+        }, {
+            "caption": "Pandoc specs",
+            "command": "open_url",
+            "args": {"url": "http://johnmacfarlane.net/pandoc/README.html#pandocs-markdown"}
+        }]
     },
-    
+
     "source.haskell": {
         "module_docs": {
             "selector": "meta.import support.other.module",
@@ -123,7 +130,7 @@
             "args": {"url": "http://www.scala-lang.org/api/current/"}
         }
     },
-    
+
     "text.tex": {
         "module_docs": {
             "patterns": [{
@@ -135,7 +142,8 @@
             "command": "exec",
             "args": {"cmd": ["texdoc", "${module}"]}
         },
-        "language_docs":{
+        "language_docs": {
+            "caption": "LaTeX2e Reference Manual",
             "command": "open_url",
             "args": {"url": "http://svn.gna.org/viewcvs/*checkout*/latexrefman/trunk/latex2e.html"}
         },
